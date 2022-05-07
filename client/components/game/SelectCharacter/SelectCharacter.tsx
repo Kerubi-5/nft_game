@@ -8,7 +8,7 @@ const SelectCharacter = () => {
   return (
     <div className={s.root}>
       <h1 className={s.title}>🦸‍♀️ Select your hero 🦸‍♂️</h1>
-
+      <span>Choose wisely</span>
       <Container>
         <div className={s.cardContainer}>
           {characters &&
