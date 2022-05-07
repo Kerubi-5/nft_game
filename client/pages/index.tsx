@@ -1,7 +1,7 @@
 import Head from "next/head";
 import s from "@styles/Home.module.css";
 import { useEffect, useState } from "react";
-import { Button } from "@components/ui";
+import { Button, Container } from "@components/ui";
 import { Layout } from "@components/common";
 
 const Home = () => {
@@ -62,8 +62,6 @@ const Home = () => {
          */
         console.log("Connected", accounts[0]);
         setCurrentAccount(accounts[0]);
-      } else {
-        alert("inaction");
       }
     } catch (error) {
       console.log(error);
@@ -79,10 +77,11 @@ const Home = () => {
       <Head>
         <title className="underline">Home</title>
       </Head>
-      <h1>Start of App</h1>
-      <div className={s.container}>
-        <Button onClick={connectWalletAction}>Connect to Metamask</Button>
-      </div>
+
+      <Container>
+        <h1>Start of App</h1>
+        <Button onClick={connectWalletAction}>Connect Wallet</Button>
+      </Container>
     </div>
   );
 };
