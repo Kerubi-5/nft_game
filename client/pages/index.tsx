@@ -1,14 +1,58 @@
 import Head from "next/head";
 import s from "@styles/Home.module.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button, Container } from "@components/ui";
 import { Layout } from "@components/common";
 import { useUI } from "@components/ui/context";
+import { SelectCharacter } from "@components/game";
+import { transformCharacterData } from "@utils/normalize";
 
 const Home = () => {
-  const { wallet, checkWallet, connectWallet } = useUI();
+  const {
+    wallet,
+    characterNFT,
+    gameContract,
+    setCharacterNFT,
+    checkWallet,
+    connectWallet,
+  } = useUI();
+
+  const checkNetwork = async () => {
+    try {
+      if ((window as any).ethereum.networkVersion !== "4") {
+        alert("Please connect to Rinkeby!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchCharacter = async () => {
+    if (wallet) {
+      const txn = await gameContract!.checkIfUserHasNFT();
+
+      if (txn.name) {
+        console.log("User has character NFT");
+        setCharacterNFT(transformCharacterData(txn));
+      } else {
+        console.log("No character NFT found");
+      }
+    }
+  };
+
+  // Check if user has metamask
   useEffect(() => {
     checkWallet();
+  }, []);
+
+  // Check if connected to rinkeby
+  useEffect(() => {
+    checkNetwork();
+  }, []);
+
+  // Fetch user owned character
+  useEffect(() => {
+    fetchCharacter();
   }, []);
 
   return (
@@ -23,7 +67,11 @@ const Home = () => {
         </div>
 
         <div className="my-5 text-center">
-          <Button onClick={connectWallet}>Connect Wallet</Button>
+          {wallet && characterNFT ? (
+            <Button onClick={connectWallet}>Connect Wallet</Button>
+          ) : (
+            <SelectCharacter />
+          )}
         </div>
       </Container>
     </div>

@@ -1,4 +1,14 @@
-import { createContext, FC, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  FC,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
+import MarvelVerse from "@utils/MarvelVerse.json";
+import { Contract, ethers } from "ethers";
+import { transformCharacterData, CONTRACT_ADDRESS } from "@utils/normalize";
 
 interface IUIProvider {
   children: ReactNode | ReactNode[];
@@ -6,6 +16,10 @@ interface IUIProvider {
 
 interface IContextProvider {
   wallet?: string;
+  characterNFT?: any;
+  characters?: any[];
+  gameContract?: Contract;
+  setCharacterNFT?: any;
   checkWallet: () => void;
   connectWallet: () => void;
 }
@@ -17,6 +31,9 @@ export const UIContext = createContext<IContextProvider>({
 
 export const UIProvider: FC<IUIProvider> = ({ children }) => {
   const [wallet, setWallet] = useState<string>();
+  const [characterNFT, setCharacterNFT] = useState(null);
+  const [gameContract, setGameContract] = useState<Contract>();
+  const [characters, setCharacters] = useState([]);
 
   // Actions
   const checkWallet = async () => {
@@ -78,11 +95,43 @@ export const UIProvider: FC<IUIProvider> = ({ children }) => {
     }
   };
 
+  const fetchGameContract = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum!);
+    const signer = provider.getSigner();
+    return new ethers.Contract(CONTRACT_ADDRESS, MarvelVerse.abi, signer);
+  };
+
+  const fetchAllDefaultCharacters = async () => {
+    const gameContract = await fetchGameContract();
+    const txn = await gameContract.getAllDefaultCharacters();
+    const characters = txn.map((characterData: any) =>
+      transformCharacterData(characterData)
+    );
+    setCharacters(characters);
+  };
+
   const value = {
     wallet,
+    characterNFT,
+    characters,
+    setCharacterNFT,
+    gameContract,
     checkWallet,
     connectWallet,
   };
+
+  // Fetch game contract
+  useEffect(() => {
+    const setContract = async () => {
+      setGameContract(await fetchGameContract());
+    };
+
+    setContract();
+  }, []);
+
+  useEffect(() => {
+    fetchAllDefaultCharacters();
+  }, []);
 
   return <UIContext.Provider value={value}>{children}</UIContext.Provider>;
 };
