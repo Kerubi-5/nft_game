@@ -1,5 +1,5 @@
 .root {
-  @apply bg-gray-50;
+  @apply bg-gray-50 absolute top-0 left-0 w-full shadow-md;
 }
 
 .nav {
@@ -7,7 +7,7 @@
 }
 
 .logo {
-  @apply flex items-center;
+  @apply text-2xl font-bold;
 }
 
 .btn {
