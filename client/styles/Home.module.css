@@ -1,0 +1,7 @@
+.root {
+  @apply bg-gray-50;
+}
+
+.container {
+  @apply max-w-md mx-auto;
+}
