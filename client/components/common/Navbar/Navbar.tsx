@@ -3,7 +3,7 @@ import { useUI } from "@components/ui/context";
 import s from "./Navbar.module.css";
 
 const Navbar = () => {
-  const { wallet, connectWallet, disconnectWallet } = useUI();
+  const { wallet, connectWallet } = useUI();
 
   return (
     <header className={s.root}>
@@ -13,9 +13,7 @@ const Navbar = () => {
         </div>
         <div>
           {wallet ? (
-            <Button className={s.btn} onClick={disconnectWallet}>
-              {wallet}
-            </Button>
+            <Button className={s.btn}>{wallet}</Button>
           ) : (
             <Button className={s.btn} onClick={connectWallet}>
               Connect Wallet

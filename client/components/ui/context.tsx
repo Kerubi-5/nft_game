@@ -1,20 +1,18 @@
-import { createContext, FC, useContext, useState } from "react";
+import { createContext, FC, useContext, useState, ReactNode } from "react";
 
 interface IUIProvider {
-  children: React.ReactNode;
+  children: ReactNode | ReactNode[];
 }
 
 interface IContextProvider {
   wallet?: string;
   checkWallet: () => void;
   connectWallet: () => void;
-  disconnectWallet: () => void;
 }
 
 export const UIContext = createContext<IContextProvider>({
   checkWallet: () => {},
   connectWallet: () => {},
-  disconnectWallet: () => {},
 });
 
 export const UIProvider: FC<IUIProvider> = ({ children }) => {
@@ -80,15 +78,10 @@ export const UIProvider: FC<IUIProvider> = ({ children }) => {
     }
   };
 
-  const disconnectWallet = () => {
-    setWallet(undefined);
-  };
-
   const value = {
     wallet,
     checkWallet,
     connectWallet,
-    disconnectWallet,
   };
 
   return <UIContext.Provider value={value}>{children}</UIContext.Provider>;
