@@ -1,6 +1,7 @@
 import "@styles/globals.css";
 import { AppProps } from "next/app";
 import { FC, ReactNode } from "react";
+import { UIProvider } from "@components/ui/context";
 
 type Props = {
   children: ReactNode | ReactNode[];
@@ -15,9 +16,11 @@ function MyApp({
   const Layout = Component.Layout ?? Noop;
 
   return (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    <UIProvider>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </UIProvider>
   );
 }
 
