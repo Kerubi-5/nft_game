@@ -14,12 +14,17 @@ const Home = () => {
   return (
     <div className={s.root}>
       <Head>
-        <title className="underline">Home</title>
+        <title>Home</title>
       </Head>
 
       <Container>
-        <h1>{wallet} of App</h1>
-        <Button onClick={connectWallet}>Connect Wallet</Button>
+        <div className={s.title}>
+          <h1 className={s.text}>Marvelverse</h1>
+        </div>
+
+        <div>
+          <Button onClick={connectWallet}>Connect Wallet</Button>
+        </div>
       </Container>
     </div>
   );

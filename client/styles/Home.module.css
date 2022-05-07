@@ -1,3 +1,18 @@
+@font-face {
+  font-family: "Marvel";
+  src: url("../assets/Marvel-Regular.woff") format("woff");
+}
+
 .root {
-  @apply bg-gray-50;
+  @apply pt-[4.5rem] pb-[1.5rem];
+}
+
+.title {
+  @apply bg-red-600 py-10;
+
+  & .text {
+    @apply text-3xl text-center text-white uppercase;
+    font-size: 6rem;
+    font-family: "Marvel";
+  }
 }
