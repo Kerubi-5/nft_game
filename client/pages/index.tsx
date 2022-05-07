@@ -22,7 +22,7 @@ const Home = () => {
           <h1 className={s.text}>Marvelverse</h1>
         </div>
 
-        <div>
+        <div className="my-5 text-center">
           <Button onClick={connectWallet}>Connect Wallet</Button>
         </div>
       </Container>

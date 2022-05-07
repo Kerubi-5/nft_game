@@ -4,7 +4,11 @@
 }
 
 .root {
-  @apply pt-[4.5rem] pb-[1.5rem];
+  background-image: url("/drstrange.jpg");
+  background-repeat: none;
+  background-size: cover;
+  background-position: center;
+  @apply min-h-screen;
 }
 
 .title {

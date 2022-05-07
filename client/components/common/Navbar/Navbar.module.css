@@ -1,5 +1,5 @@
 .root {
-  @apply bg-gray-50 absolute top-0 left-0 w-full shadow-md;
+  @apply bg-gray-50/25 absolute top-0 left-0 w-full shadow-md;
 }
 
 .nav {
@@ -7,9 +7,9 @@
 }
 
 .logo {
-  @apply text-2xl font-bold;
+  @apply text-2xl font-bold text-red-500;
 }
 
 .btn {
-  @apply w-14 text-gray-600 font-semibold px-2 py-1 rounded-md bg-gray-200 overflow-hidden whitespace-nowrap text-ellipsis cursor-pointer;
+  @apply w-14 text-gray-600 font-semibold px-2 py-1 rounded-md bg-red-500 overflow-hidden whitespace-nowrap text-ellipsis cursor-pointer;
 }
