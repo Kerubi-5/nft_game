@@ -11,9 +11,9 @@ const Home = () => {
   const {
     wallet,
     characterNFT,
+    characters,
     gameContract,
     setCharacterNFT,
-    checkWallet,
     connectWallet,
   } = useUI();
 
@@ -40,16 +40,6 @@ const Home = () => {
     }
   };
 
-  // Check if user has metamask
-  useEffect(() => {
-    checkWallet();
-  }, []);
-
-  // Check if connected to rinkeby
-  useEffect(() => {
-    checkNetwork();
-  }, []);
-
   // Fetch user owned character
   useEffect(() => {
     fetchCharacter();
@@ -67,10 +57,10 @@ const Home = () => {
         </div>
 
         <div className="my-5 text-center">
-          {wallet && characterNFT ? (
-            <Button onClick={connectWallet}>Connect Wallet</Button>
-          ) : (
+          {wallet && characters ? (
             <SelectCharacter />
+          ) : (
+            <Button onClick={connectWallet}>Connect Wallet</Button>
           )}
         </div>
       </Container>

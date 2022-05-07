@@ -44,8 +44,6 @@ export const UIProvider: FC<IUIProvider> = ({ children }) => {
         console.log("Make sure you have MetaMask!");
         return;
       } else if (ethereum.request) {
-        console.log("We have the ethereum object", ethereum);
-
         const accounts = await ethereum.request({
           method: "eth_requestAccounts",
         });
@@ -75,18 +73,11 @@ export const UIProvider: FC<IUIProvider> = ({ children }) => {
         return;
       }
 
-      /*
-       * Fancy method to request access to account.
-       */
-
       if (ethereum.request) {
         const accounts = await ethereum.request({
           method: "eth_requestAccounts",
         });
 
-        /*
-         * Boom! This should print out public address once we authorize Metamask.
-         */
         console.log("Connected", accounts[0]);
         setWallet(accounts[0]);
       }
@@ -102,8 +93,8 @@ export const UIProvider: FC<IUIProvider> = ({ children }) => {
   };
 
   const fetchAllDefaultCharacters = async () => {
-    const gameContract = await fetchGameContract();
-    const txn = await gameContract.getAllDefaultCharacters();
+    const contract = await fetchGameContract();
+    const txn = await contract.getAllDefaultCharacters();
     const characters = txn.map((characterData: any) =>
       transformCharacterData(characterData)
     );
@@ -129,9 +120,15 @@ export const UIProvider: FC<IUIProvider> = ({ children }) => {
     setContract();
   }, []);
 
+  // Check if user has metamask
   useEffect(() => {
-    fetchAllDefaultCharacters();
+    checkWallet();
   }, []);
+
+  // Fetch all default characters
+  useEffect(() => {
+    if (wallet) fetchAllDefaultCharacters();
+  }, [wallet]);
 
   return <UIContext.Provider value={value}>{children}</UIContext.Provider>;
 };
