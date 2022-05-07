@@ -1,5 +1,7 @@
+import s from "./Footer.module.css";
+
 const Footer = () => {
-  return <footer className="text-center">All copy rights reserved</footer>;
+  return <footer className={s.root}>All copy rights reserved</footer>;
 };
 
 export default Footer;
