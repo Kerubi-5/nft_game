@@ -106,6 +106,9 @@ export const UIProvider: FC<IUIProvider> = ({ children }) => {
     if (wallet && gameContract) {
       const contract = await fetchGameContract();
       const characterNFT = await contract.checkIfUserHasNFT();
+
+      if (characterNFT.name === "" || characterNFT.name === undefined) return;
+
       setCharacterNFT(transformCharacterData(characterNFT));
     }
   };

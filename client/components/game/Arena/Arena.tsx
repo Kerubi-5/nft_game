@@ -57,7 +57,7 @@ const Arena: FC<IArena> = ({ character }) => {
         <div>
           <h2 className={s.label}>The Boss 😈</h2>
           <div className={s.bossContainer}>
-            <CharacterCard character={boss!} variant="arena" />
+            {boss && <CharacterCard character={boss} variant="arena" />}
             {attack && <span className={s.hitAnimation}>💥</span>}
           </div>
         </div>

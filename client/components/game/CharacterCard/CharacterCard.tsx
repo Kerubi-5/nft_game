@@ -15,6 +15,7 @@ const CharacterCard = ({
   variant?: "slim" | "arena";
 }) => {
   const { gameContract } = useUI();
+  const hpPercent = (character.hp / character.maxHp) * 100;
 
   // mint character NFT
   const mintCharacter = async () => {
@@ -40,15 +41,26 @@ const CharacterCard = ({
         <div className={s.overlay}>
           <div className={s.details}>
             <div className={s.detail}>⚔ {character.attackDamage}</div>
-            <div>💙 {character.maxHp}</div>
+            <div>💙 {character.hp}</div>
           </div>
         </div>
       </div>
 
-      {variant === "slim" && (
+      {variant === "slim" ? (
         <Button onClick={mintCharacter} className={s.btn}>
           Mint {character.name}
         </Button>
+      ) : (
+        <div className="w-full bg-gray-200 dark:bg-gray-700">
+          <div
+            className={`bg-green-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none`}
+            style={{
+              width: `${hpPercent}%`,
+            }}
+          >
+            {hpPercent}%
+          </div>
+        </div>
       )}
     </div>
   );
