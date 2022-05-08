@@ -53,15 +53,19 @@ const Arena: FC<IArena> = ({ character }) => {
           <h2 className={s.label}>Your Hero 🦸‍♀️🦸‍♂️</h2>
           <CharacterCard character={character} variant="arena" />
         </div>
-
-        <span className={s.vs}>⚔</span>
+        <span className={`${s.vs} ${attack && "animate-bounce"}`}>⚔</span>
         <div>
           <h2 className={s.label}>The Boss 😈</h2>
-          <CharacterCard character={boss!} variant="arena" />
+          <div className={s.bossContainer}>
+            <CharacterCard character={boss!} variant="arena" />
+            {attack && <span className={s.hitAnimation}>💥</span>}
+          </div>
         </div>
       </div>
       <div>
-        <Button onClick={attackBoss}>Attack Now!</Button>
+        <Button onClick={attackBoss}>
+          {attack ? "Attacking..." : "Attack Now!"}
+        </Button>
       </div>
     </div>
   );

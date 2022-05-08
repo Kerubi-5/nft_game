@@ -13,3 +13,11 @@
 .label {
   @apply font-bold text-white;
 }
+
+.bossContainer {
+  @apply relative overflow-hidden;
+
+  & .hitAnimation {
+    @apply absolute inset-0 text-[125px] flex items-center justify-center animate-ping;
+  }
+}
