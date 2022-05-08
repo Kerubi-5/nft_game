@@ -14,7 +14,7 @@ const CharacterCard = ({
   index?: BigNumber;
   variant?: "slim" | "arena";
 }) => {
-  const { gameContract } = useUI();
+  const { gameContract, fetchCharacterNFT } = useUI();
   const hpPercent = (character.hp / character.maxHp) * 100;
 
   // mint character NFT
@@ -26,7 +26,7 @@ const CharacterCard = ({
 
         await mintTxn.wait();
 
-        console.log("Character minted");
+        fetchCharacterNFT();
       } catch (error) {
         console.log(error);
       }

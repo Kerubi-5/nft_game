@@ -21,6 +21,7 @@ interface IContextProvider {
   characters?: any[];
   gameContract?: Contract;
   setCharacterNFT?: any;
+  fetchCharacterNFT: () => void;
   checkWallet: () => void;
   connectWallet: () => void;
 }
@@ -28,6 +29,7 @@ interface IContextProvider {
 export const UIContext = createContext<IContextProvider>({
   checkWallet: () => {},
   connectWallet: () => {},
+  fetchCharacterNFT: () => {},
 });
 
 export const UIProvider: FC<IUIProvider> = ({ children }) => {
@@ -117,7 +119,7 @@ export const UIProvider: FC<IUIProvider> = ({ children }) => {
     wallet,
     characterNFT,
     characters,
-    setCharacterNFT,
+    fetchCharacterNFT,
     gameContract,
     checkWallet,
     connectWallet,
@@ -154,7 +156,6 @@ export const UIProvider: FC<IUIProvider> = ({ children }) => {
       tokenId: BigNumber,
       characterIndex: BigNumber
     ) => {
-      fetchCharacterNFT();
       alert(
         `Your NFT is all done -- see it here: https://testnets.opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId.toNumber()}`
       );
