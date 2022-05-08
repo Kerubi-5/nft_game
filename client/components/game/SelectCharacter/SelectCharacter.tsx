@@ -2,6 +2,7 @@ import { Container } from "@components/ui";
 import s from "./SelectCharacter.module.css";
 import { useUI } from "@components/ui/context";
 import CharacterCard from "../CharacterCard";
+import { BigNumber } from "ethers";
 
 const SelectCharacter = () => {
   const { characters } = useUI();
@@ -12,9 +13,13 @@ const SelectCharacter = () => {
       <Container>
         <div className={s.cardContainer}>
           {characters &&
-            characters.map((character) => {
+            characters.map((character, index) => {
               return (
-                <CharacterCard key={character.name} character={character} />
+                <CharacterCard
+                  key={character.name}
+                  character={character}
+                  index={BigNumber.from(index)}
+                />
               );
             })}
         </div>

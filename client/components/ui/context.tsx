@@ -7,8 +7,9 @@ import {
   useEffect,
 } from "react";
 import MarvelVerse from "@utils/MarvelVerse.json";
-import { Contract, ethers } from "ethers";
+import { BigNumber, Contract, ethers } from "ethers";
 import { transformCharacterData, CONTRACT_ADDRESS } from "@utils/normalize";
+import { Character } from "index";
 
 interface IUIProvider {
   children: ReactNode | ReactNode[];
@@ -31,7 +32,7 @@ export const UIContext = createContext<IContextProvider>({
 
 export const UIProvider: FC<IUIProvider> = ({ children }) => {
   const [wallet, setWallet] = useState<string>();
-  const [characterNFT, setCharacterNFT] = useState(null);
+  const [characterNFT, setCharacterNFT] = useState<Character>();
   const [gameContract, setGameContract] = useState<Contract>();
   const [characters, setCharacters] = useState([]);
 
@@ -101,6 +102,14 @@ export const UIProvider: FC<IUIProvider> = ({ children }) => {
     setCharacters(characters);
   };
 
+  const fetchCharacterNFT = async () => {
+    if (wallet && gameContract) {
+      const contract = await fetchGameContract();
+      const characterNFT = await contract.checkIfUserHasNFT();
+      setCharacterNFT(transformCharacterData(characterNFT));
+    }
+  };
+
   const value = {
     wallet,
     characterNFT,
@@ -129,6 +138,43 @@ export const UIProvider: FC<IUIProvider> = ({ children }) => {
   useEffect(() => {
     if (wallet) fetchAllDefaultCharacters();
   }, [wallet]);
+
+  // Fetch character NFT
+  useEffect(() => {
+    if (wallet && gameContract) fetchCharacterNFT();
+  }, [wallet, gameContract]);
+
+  // Event listener
+  useEffect(() => {
+    const onCharacterMint = async (
+      sender: string,
+      tokenId: BigNumber,
+      characterIndex: BigNumber
+    ) => {
+      console.log(
+        `CharacterNFTMinted - sender: ${sender} tokenId: ${tokenId.toNumber()} characterIndex: ${characterIndex.toNumber()}`
+      );
+      alert(
+        `Your NFT is all done -- see it here: https://testnets.opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId.toNumber()}`
+      );
+
+      if (gameContract) {
+        const characterNFT = await gameContract.checkIfUserHasNFT();
+        console.log("CharacterNFT: ", characterNFT);
+        setCharacterNFT(transformCharacterData(characterNFT));
+      }
+    };
+
+    if (gameContract) {
+      gameContract.on("CharacterNFTMinted", onCharacterMint);
+    }
+
+    return () => {
+      if (gameContract) {
+        gameContract.off("CharacterNFTMinted", onCharacterMint);
+      }
+    };
+  }, []);
 
   return <UIContext.Provider value={value}>{children}</UIContext.Provider>;
 };

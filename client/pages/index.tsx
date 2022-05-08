@@ -17,16 +17,6 @@ const Home = () => {
     connectWallet,
   } = useUI();
 
-  const checkNetwork = async () => {
-    try {
-      if ((window as any).ethereum.networkVersion !== "4") {
-        alert("Please connect to Rinkeby!");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const fetchCharacter = async () => {
     if (wallet) {
       const txn = await gameContract!.checkIfUserHasNFT();
