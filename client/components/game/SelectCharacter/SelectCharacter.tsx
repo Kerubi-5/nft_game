@@ -19,6 +19,7 @@ const SelectCharacter = () => {
                   key={character.name}
                   character={character}
                   index={BigNumber.from(index)}
+                  variant="slim"
                 />
               );
             })}

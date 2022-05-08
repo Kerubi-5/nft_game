@@ -6,10 +6,10 @@
   @apply relative cursor-pointer;
 
   & .img {
+    object-position: center;
+    object-fit: cover;
     height: 450px;
     width: 100%;
-    object-fit: cover;
-    object-position: top;
   }
 
   & .name {
@@ -20,7 +20,7 @@
     @apply absolute inset-0 bg-black/75 z-50 opacity-0 transition-all duration-300;
 
     & .details {
-      @apply flex flex-col justify-center items-center h-full;
+      @apply flex flex-col justify-center items-center h-full text-white font-bold text-2xl;
     }
   }
 

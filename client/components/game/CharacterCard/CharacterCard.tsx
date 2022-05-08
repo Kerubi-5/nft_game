@@ -8,9 +8,11 @@ import { BigNumber } from "ethers";
 const CharacterCard = ({
   character,
   index,
+  variant = "slim",
 }: {
   character: Character;
-  index: BigNumber;
+  index?: BigNumber;
+  variant?: "slim" | "arena";
 }) => {
   const { gameContract } = useUI();
 
@@ -43,9 +45,11 @@ const CharacterCard = ({
         </div>
       </div>
 
-      <Button onClick={mintCharacter} className={s.btn}>
-        Mint {character.name}
-      </Button>
+      {variant === "slim" && (
+        <Button onClick={mintCharacter} className={s.btn}>
+          Mint {character.name}
+        </Button>
+      )}
     </div>
   );
 };

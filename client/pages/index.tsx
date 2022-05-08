@@ -6,6 +6,7 @@ import { Layout } from "@components/common";
 import { useUI } from "@components/ui/context";
 import { SelectCharacter } from "@components/game";
 import { transformCharacterData } from "@utils/normalize";
+import Arena from "@components/game/Arena/Arena";
 
 const Home = () => {
   const {
@@ -48,7 +49,11 @@ const Home = () => {
 
         <div className="my-5 text-center">
           {wallet && characters ? (
-            <SelectCharacter />
+            characterNFT ? (
+              <Arena character={characterNFT} />
+            ) : (
+              <SelectCharacter />
+            )
           ) : (
             <Button onClick={connectWallet}>Connect Wallet</Button>
           )}
