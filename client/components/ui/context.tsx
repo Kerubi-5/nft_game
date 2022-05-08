@@ -154,9 +154,7 @@ export const UIProvider: FC<IUIProvider> = ({ children }) => {
       tokenId: BigNumber,
       characterIndex: BigNumber
     ) => {
-      console.log(
-        `CharacterNFTMinted - sender: ${sender} tokenId: ${tokenId.toNumber()} characterIndex: ${characterIndex.toNumber()}`
-      );
+      fetchCharacterNFT();
       alert(
         `Your NFT is all done -- see it here: https://testnets.opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId.toNumber()}`
       );
@@ -177,7 +175,7 @@ export const UIProvider: FC<IUIProvider> = ({ children }) => {
         gameContract.off("CharacterNFTMinted", onCharacterMint);
       }
     };
-  }, []);
+  }, [gameContract]);
 
   return <UIContext.Provider value={value}>{children}</UIContext.Provider>;
 };
