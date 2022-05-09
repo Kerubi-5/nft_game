@@ -40,10 +40,17 @@ const CharacterCard = ({
       <div className={s.body}>
         <span className={s.name}>{character.name}</span>
         <img className={s.img} src={character.imageURI} />
+        {character.hp === 0 && <span className={s.isDead}>☠</span>}
         <div className={s.overlay}>
           <div className={s.details}>
-            <div className={s.detail}>⚔ {character.attackDamage}</div>
-            <div>💙 {character.hp}</div>
+            {character.hp ? (
+              <>
+                <div className={s.detail}>⚔ {character.attackDamage}</div>
+                <div>💙 {character.hp}</div>
+              </>
+            ) : (
+              <span>DEAD</span>
+            )}
           </div>
         </div>
       </div>

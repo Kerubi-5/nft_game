@@ -1,17 +1,17 @@
 const main = async () => {
   const gameContractFactory = await hre.ethers.getContractFactory("MyEpicGame");
   const gameContract = await gameContractFactory.deploy(
-    ["Dr. Strange", "Professor X", "Scarlet Witch"], // Names
+    ["Dr. Strange", "Professor X", "America Chavez"], // Names
     [
-      "https://i.imgur.com/tfJqboJ.jpeg", // Dr. Strange
-      "https://i.imgur.com/O2skXdz.jpeg", // Professor Xavier
-      "https://i.imgur.com/sKoG1Co.jpeg", // Wanda
+      "QmYcHv9Y4u6rL47XE5esAafPXwdCBg7ckfTXbeKr6KRMbG", // Dr. Strange
+      "QmfHC8ZkZ6fr4wwe8hatW8ssSPybLVUcpzgVdkNGuLtLdU", // Professor Xavier
+      "QmVm9Tv7NaqAuR5AdNvGm43c8BCh3HuNFsXu287zGM6ewh", // America Chavez
     ],
-    [100, 200, 200], // HP values
-    [100, 50, 100], // Attack damage values
-    "Dormammu",
-    "https://i.imgur.com/RdAGC2H.jpeg",
-    1000,
+    [100, 250, 200], // HP values
+    [200, 50, 100], // Attack damage values
+    "Scarlet Witch",
+    "QmcpaB6CvyQpyVvKKiHKyo2hGM7juaNxsR44vTdyvBFk6W",
+    10000,
     50
   );
 

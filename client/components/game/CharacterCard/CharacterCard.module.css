@@ -16,6 +16,10 @@
     @apply absolute top-1 left-1 bg-gray-50/20 rounded-md p-1;
   }
 
+  & .isDead {
+    @apply absolute inset-0 h-full flex justify-center items-center text-[150px] bg-black/75 z-50;
+  }
+
   & .overlay {
     @apply absolute inset-0 bg-black/75 z-50 opacity-0 transition-all duration-300;
 
