@@ -31,10 +31,6 @@ const Home = () => {
     }
   };
 
-  console.log("characters", characters);
-  console.log("characterNFT", characterNFT);
-  console.log("wallet", wallet);
-
   // Fetch user owned character
   useEffect(() => {
     fetchCharacter();
