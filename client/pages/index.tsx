@@ -1,14 +1,43 @@
 import Head from "next/head";
 import s from "@styles/Home.module.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button, Container } from "@components/ui";
 import { Layout } from "@components/common";
 import { useUI } from "@components/ui/context";
+import { SelectCharacter } from "@components/game";
+import { transformCharacterData } from "@utils/normalize";
+import Arena from "@components/game/Arena/Arena";
 
 const Home = () => {
-  const { wallet, checkWallet, connectWallet } = useUI();
+  const {
+    wallet,
+    characterNFT,
+    characters,
+    gameContract,
+    setCharacterNFT,
+    connectWallet,
+  } = useUI();
+
+  const fetchCharacter = async () => {
+    if (wallet) {
+      const txn = await gameContract!.checkIfUserHasNFT();
+
+      if (txn.name) {
+        console.log("User has character NFT");
+        setCharacterNFT(transformCharacterData(txn));
+      } else {
+        console.log("No character NFT found");
+      }
+    }
+  };
+
+  console.log("characters", characters);
+  console.log("characterNFT", characterNFT);
+  console.log("wallet", wallet);
+
+  // Fetch user owned character
   useEffect(() => {
-    checkWallet();
+    fetchCharacter();
   }, []);
 
   return (
@@ -23,7 +52,15 @@ const Home = () => {
         </div>
 
         <div className="my-5 text-center">
-          <Button onClick={connectWallet}>Connect Wallet</Button>
+          {wallet && characters ? (
+            characterNFT ? (
+              <Arena character={characterNFT} />
+            ) : (
+              <SelectCharacter />
+            )
+          ) : (
+            <Button onClick={connectWallet}>Connect Wallet</Button>
+          )}
         </div>
       </Container>
     </div>

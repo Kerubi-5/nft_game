@@ -1,24 +1,42 @@
-import { createContext, FC, useContext, useState } from "react";
+import {
+  createContext,
+  FC,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
+import MarvelVerse from "@utils/MarvelVerse.json";
+import { BigNumber, Contract, ethers } from "ethers";
+import { transformCharacterData, CONTRACT_ADDRESS } from "@utils/normalize";
+import { Character } from "index";
 
 interface IUIProvider {
-  children: React.ReactNode;
+  children: ReactNode | ReactNode[];
 }
 
 interface IContextProvider {
   wallet?: string;
+  characterNFT?: any;
+  characters?: any[];
+  gameContract?: Contract;
+  setCharacterNFT?: any;
+  fetchCharacterNFT: () => void;
   checkWallet: () => void;
   connectWallet: () => void;
-  disconnectWallet: () => void;
 }
 
 export const UIContext = createContext<IContextProvider>({
   checkWallet: () => {},
   connectWallet: () => {},
-  disconnectWallet: () => {},
+  fetchCharacterNFT: () => {},
 });
 
 export const UIProvider: FC<IUIProvider> = ({ children }) => {
   const [wallet, setWallet] = useState<string>();
+  const [characterNFT, setCharacterNFT] = useState<Character>();
+  const [gameContract, setGameContract] = useState<Contract>();
+  const [characters, setCharacters] = useState([]);
 
   // Actions
   const checkWallet = async () => {
@@ -29,8 +47,6 @@ export const UIProvider: FC<IUIProvider> = ({ children }) => {
         console.log("Make sure you have MetaMask!");
         return;
       } else if (ethereum.request) {
-        console.log("We have the ethereum object", ethereum);
-
         const accounts = await ethereum.request({
           method: "eth_requestAccounts",
         });
@@ -60,18 +76,11 @@ export const UIProvider: FC<IUIProvider> = ({ children }) => {
         return;
       }
 
-      /*
-       * Fancy method to request access to account.
-       */
-
       if (ethereum.request) {
         const accounts = await ethereum.request({
           method: "eth_requestAccounts",
         });
 
-        /*
-         * Boom! This should print out public address once we authorize Metamask.
-         */
         console.log("Connected", accounts[0]);
         setWallet(accounts[0]);
       }
@@ -80,16 +89,94 @@ export const UIProvider: FC<IUIProvider> = ({ children }) => {
     }
   };
 
-  const disconnectWallet = () => {
-    setWallet(undefined);
+  const fetchGameContract = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum!);
+    const signer = provider.getSigner();
+    return new ethers.Contract(CONTRACT_ADDRESS, MarvelVerse.abi, signer);
+  };
+
+  const fetchAllDefaultCharacters = async () => {
+    const contract = await fetchGameContract();
+    const txn = await contract.getAllDefaultCharacters();
+    const characters = txn.map((characterData: any) =>
+      transformCharacterData(characterData)
+    );
+    setCharacters(characters);
+  };
+
+  const fetchCharacterNFT = async () => {
+    if (wallet && gameContract) {
+      const contract = await fetchGameContract();
+      const characterNFT = await contract.checkIfUserHasNFT();
+
+      if (characterNFT.name === "" || characterNFT.name === undefined) return;
+
+      setCharacterNFT(transformCharacterData(characterNFT));
+    }
   };
 
   const value = {
     wallet,
+    characterNFT,
+    characters,
+    fetchCharacterNFT,
+    gameContract,
     checkWallet,
     connectWallet,
-    disconnectWallet,
   };
+
+  // Fetch game contract
+  useEffect(() => {
+    const setContract = async () => {
+      setGameContract(await fetchGameContract());
+    };
+
+    setContract();
+  }, []);
+
+  // Check if user has metamask
+  useEffect(() => {
+    checkWallet();
+  }, []);
+
+  // Fetch all default characters
+  useEffect(() => {
+    if (wallet) fetchAllDefaultCharacters();
+  }, [wallet]);
+
+  // Fetch character NFT
+  useEffect(() => {
+    if (wallet && gameContract) fetchCharacterNFT();
+  }, [wallet, gameContract]);
+
+  // Event listener
+  useEffect(() => {
+    const onCharacterMint = async (
+      sender: string,
+      tokenId: BigNumber,
+      characterIndex: BigNumber
+    ) => {
+      alert(
+        `Your NFT is all done -- see it here: https://testnets.opensea.io/assets/${CONTRACT_ADDRESS}/${tokenId.toNumber()}`
+      );
+
+      if (gameContract) {
+        const characterNFT = await gameContract.checkIfUserHasNFT();
+        console.log("CharacterNFT: ", characterNFT);
+        setCharacterNFT(transformCharacterData(characterNFT));
+      }
+    };
+
+    if (gameContract) {
+      gameContract.on("CharacterNFTMinted", onCharacterMint);
+    }
+
+    return () => {
+      if (gameContract) {
+        gameContract.off("CharacterNFTMinted", onCharacterMint);
+      }
+    };
+  }, [gameContract]);
 
   return <UIContext.Provider value={value}>{children}</UIContext.Provider>;
 };

@@ -4,7 +4,7 @@ import s from "./Navbar.module.css";
 import { UilLock } from "@iconscout/react-unicons";
 
 const Navbar = () => {
-  const { wallet, connectWallet, disconnectWallet } = useUI();
+  const { wallet, connectWallet } = useUI();
 
   return (
     <header className={s.root}>
@@ -14,9 +14,7 @@ const Navbar = () => {
         </div>
         <div>
           {wallet ? (
-            <Button className={`w-14 ${s.btn}`} onClick={disconnectWallet}>
-              {wallet}
-            </Button>
+            <Button className={`w-14 ${s.btn}`}>{wallet}</Button>
           ) : (
             <Button className={s.btn} onClick={connectWallet}>
               <UilLock />

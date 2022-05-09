@@ -1,0 +1,11 @@
+.root {
+  @apply bg-red-600/80 text-white font-semibold;
+}
+
+.title {
+  @apply text-2xl font-bold py-2 uppercase;
+}
+
+.cardContainer {
+  @apply grid grid-cols-3 overflow-hidden gap-3 px-4;
+}
