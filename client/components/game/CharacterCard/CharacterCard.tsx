@@ -3,6 +3,7 @@ import { Character } from "index";
 import s from "./CharacterCard.module.css";
 import { useUI } from "@components/ui/context";
 import { BigNumber } from "ethers";
+import { useState } from "react";
 // import { UilHeart, UilFire } from "@iconscout/react-unicons";
 
 const CharacterCard = ({
@@ -14,6 +15,7 @@ const CharacterCard = ({
   index?: BigNumber;
   variant?: "slim" | "arena";
 }) => {
+  const [loading, setLoading] = useState(false);
   const { gameContract, fetchCharacterNFT } = useUI();
   const hpPercent = (character.hp / character.maxHp) * 100;
 
@@ -21,14 +23,14 @@ const CharacterCard = ({
   const mintCharacter = async () => {
     if (gameContract) {
       try {
-        console.log("Minting...");
+        setLoading(true);
         const mintTxn = await gameContract.mintCharacterNFT(index);
-
         await mintTxn.wait();
-
+        setLoading(false);
         fetchCharacterNFT();
       } catch (error) {
         console.log(error);
+        setLoading(false);
       }
     }
   };
@@ -48,7 +50,7 @@ const CharacterCard = ({
 
       {variant === "slim" ? (
         <Button onClick={mintCharacter} className={s.btn}>
-          Mint {character.name}
+          {loading ? "Minting..." : `Mint ${character.name}`}
         </Button>
       ) : (
         <div className="w-full bg-gray-200 dark:bg-gray-700">
