@@ -10,25 +10,13 @@ const main = async () => {
     [100, 250, 200], // HP values
     [200, 50, 100], // Attack damage values
     "Scarlet Witch",
-    "QmcpaB6CvyQpyVvKKiHKyo2hGM7juaNxsR44vTdyvBFk6W",
+    "QmUBZ6AxhCGP9nQbK5BiCowcJ2YdoaMnLnPhu7sBHx4Evx",
     10000,
     50
   );
 
   await gameContract.deployed();
   console.log("Contract deployed to:", gameContract.address);
-
-  let txn;
-  // We only have three characters.
-  // an NFT w/ the character at index 2 of our array.
-  txn = await gameContract.mintCharacterNFT(1);
-  await txn.wait();
-
-  txn = await gameContract.attackBoss();
-  await txn.wait();
-
-  txn = await gameContract.attackBoss();
-  await txn.wait();
 
   console.log("Done deploying and minting!");
 };

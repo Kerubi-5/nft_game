@@ -5,13 +5,14 @@ import CharacterCard from "../CharacterCard";
 import { useUI } from "@components/ui/context";
 import { transformCharacterData } from "@utils/normalize";
 import s from "./Arena.module.css";
+import { BigNumber } from "ethers";
 
 interface IArena {
   character: Character;
 }
 
 const Arena: FC<IArena> = ({ character }) => {
-  const { gameContract } = useUI();
+  const { gameContract, fetchCharacterNFT } = useUI();
   const [boss, setBoss] = useState<Character>();
   const [attack, setAttack] = useState(false);
 
@@ -25,6 +26,31 @@ const Arena: FC<IArena> = ({ character }) => {
       }
     }
   };
+
+  // Attack Event Listener
+  useEffect(() => {
+    const onAttack = async (
+      sender: string,
+      newBossHp: BigNumber,
+      newPlayerHp: BigNumber
+    ) => {
+      fetchBoss();
+      fetchCharacterNFT();
+      alert(
+        `Your HP is ${newPlayerHp.toNumber()}, and the boss's HP is ${newBossHp.toNumber()}`
+      );
+    };
+
+    if (gameContract) {
+      gameContract.on("AttackComplete", onAttack);
+    }
+
+    return () => {
+      if (gameContract) {
+        gameContract.off("AttackComplete", onAttack);
+      }
+    };
+  }, []);
 
   const attackBoss = async () => {
     try {

@@ -20,7 +20,6 @@ interface IContextProvider {
   characterNFT?: any;
   characters?: any[];
   gameContract?: Contract;
-  setCharacterNFT?: any;
   fetchCharacterNFT: () => void;
   checkWallet: () => void;
   connectWallet: () => void;
@@ -149,7 +148,7 @@ export const UIProvider: FC<IUIProvider> = ({ children }) => {
     if (wallet && gameContract) fetchCharacterNFT();
   }, [wallet, gameContract]);
 
-  // Event listener
+  // Mint Character Event listener
   useEffect(() => {
     const onCharacterMint = async (
       sender: string,
