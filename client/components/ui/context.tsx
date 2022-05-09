@@ -89,14 +89,18 @@ export const UIProvider: FC<IUIProvider> = ({ children }) => {
   };
 
   const fetchGameContract = async () => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum!);
-    const signer = provider.getSigner();
-    return new ethers.Contract(CONTRACT_ADDRESS, MarvelVerse.abi, signer);
+    if (window.ethereum) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum!);
+      const signer = provider.getSigner();
+      return new ethers.Contract(CONTRACT_ADDRESS, MarvelVerse.abi, signer);
+    } else {
+      alert("No Ethereum provider found");
+    }
   };
 
   const fetchAllDefaultCharacters = async () => {
     const contract = await fetchGameContract();
-    const txn = await contract.getAllDefaultCharacters();
+    const txn = await contract?.getAllDefaultCharacters();
     const characters = txn.map((characterData: any) =>
       transformCharacterData(characterData)
     );
@@ -106,7 +110,7 @@ export const UIProvider: FC<IUIProvider> = ({ children }) => {
   const fetchCharacterNFT = async () => {
     if (wallet && gameContract) {
       const contract = await fetchGameContract();
-      const characterNFT = await contract.checkIfUserHasNFT();
+      const characterNFT = await contract?.checkIfUserHasNFT();
 
       if (characterNFT.name === "" || characterNFT.name === undefined) return;
 
