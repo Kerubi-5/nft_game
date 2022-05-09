@@ -64,10 +64,10 @@ const CharacterCard = ({
           <div
             className={`bg-green-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none`}
             style={{
-              width: `${hpPercent}%`,
+              width: `${Math.round(hpPercent)}%`,
             }}
           >
-            {hpPercent}%
+            {Math.round(hpPercent)}%
           </div>
         </div>
       )}
