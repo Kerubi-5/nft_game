@@ -13,5 +13,3 @@ export type Character = {
   maxHp: number;
   attackDamage: number;
 };
-
-export {};

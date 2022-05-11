@@ -1,12 +1,9 @@
 import Head from "next/head";
 import s from "@styles/Home.module.css";
-import { useEffect, useState } from "react";
 import { Button, Container } from "@components/ui";
 import { Layout } from "@components/common";
 import { useUI } from "@components/ui/context";
-import { SelectCharacter } from "@components/game";
-import { transformCharacterData } from "@utils/normalize";
-import Arena from "@components/game/Arena/Arena";
+import { SelectCharacter, Arena } from "@components/game";
 
 const Home = () => {
   const { wallet, characterNFT, characters, connectWallet } = useUI();
