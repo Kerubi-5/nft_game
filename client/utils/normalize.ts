@@ -1,6 +1,4 @@
-import { Character } from "index";
-
-const CONTRACT_ADDRESS = "0x3d2888021dDc8059A1a3Ba058cb941EBf5a2276D";
+const CONTRACT_ADDRESS = "0x42aAc2921eebb5350caFa0932A3b1ef42f35582f";
 
 /*
  * Add this method and make sure to export it on the bottom!
@@ -8,7 +6,7 @@ const CONTRACT_ADDRESS = "0x3d2888021dDc8059A1a3Ba058cb941EBf5a2276D";
 const transformCharacterData = (characterData: any) => {
   return {
     name: characterData.name,
-    imageURI: characterData.imageURI,
+    imageURI: `https://gateway.pinata.cloud/ipfs/${characterData.imageURI}`,
     hp: characterData.hp.toNumber(),
     maxHp: characterData.maxHp.toNumber(),
     attackDamage: characterData.attackDamage.toNumber(),

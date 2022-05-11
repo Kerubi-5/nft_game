@@ -11,5 +11,5 @@
 }
 
 .btn {
-  @apply w-14 text-gray-600 font-semibold px-2 py-1 rounded-md bg-red-500 overflow-hidden whitespace-nowrap text-ellipsis cursor-pointer;
+  @apply text-gray-600 font-semibold px-2 py-1 rounded-md bg-red-500 overflow-hidden whitespace-nowrap text-ellipsis cursor-pointer;
 }

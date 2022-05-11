@@ -1,6 +1,7 @@
 import { Button } from "@components/ui";
 import { useUI } from "@components/ui/context";
 import s from "./Navbar.module.css";
+import { UilLock } from "@iconscout/react-unicons";
 
 const Navbar = () => {
   const { wallet, connectWallet } = useUI();
@@ -13,10 +14,10 @@ const Navbar = () => {
         </div>
         <div>
           {wallet ? (
-            <Button className={s.btn}>{wallet}</Button>
+            <Button className={`w-14 ${s.btn}`}>{wallet}</Button>
           ) : (
             <Button className={s.btn} onClick={connectWallet}>
-              Connect Wallet
+              <UilLock />
             </Button>
           )}
         </div>
